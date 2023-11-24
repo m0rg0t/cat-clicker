@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, { useRef, useState } from "react";
 import getRandomCatImage from "../helpers/getRandomCatImage";
+import bridge from "@vkontakte/vk-bridge";
 
 import {
   Avatar,
@@ -13,6 +14,7 @@ import {
   Paragraph,
   Counter,
   Title,
+  Button
 } from "@vkontakte/vkui";
 import getRandomGoodText from "../helpers/getRandomGoodText";
 
@@ -57,9 +59,10 @@ const Home = ({
             {getRandomGoodText()}
           </Title>
           <Paragraph>
-            С каждым нажатием на котика твой счет увеличивается на 1. Но каждое
-            нажатие требует просмотра рекламы. Но даже если ты не нажмешь на
-            котика, ты все равно большой молодец, и у тебя все получится.
+            С каждым нажатием на котика твой счет увеличивается на 1. Но нажатие
+            иногда вызывает рекламу.
+            <br /> Но даже если ты не нажмешь на котика, ты все равно большой
+            молодец, и у тебя все получится.
           </Paragraph>
           <center>
             <img
@@ -72,15 +75,40 @@ const Home = ({
               onClick={() => {
                 console.log("click on cat", clickCounter);
                 setClickCounter((prev) => prev + 1);
-                if (isNativeAds) {
+                if (isNativeAds && (clickCounter + 1) % 3 === 0) {
                   showAd();
                   isNativeAdsAvailableCheck();
                 }
                 //openAction();
               }}
             />
+            <Button
+              onClick={() => {
+				const text = `Я нажал на котика вот столько раз: ${clickCounter}
+
+				${getRandomGoodText()}
+				
+				№котокликер`;
+
+                bridge
+                  .send("VKWebAppShowWallPostBox", {
+                    message: text,
+                    attachments: "https://vk.com/app51801283",
+                  })
+                  .then((data) => {
+                    if (data.post_id) {
+                      // Запись размещена
+                    }
+                  })
+                  .catch((error) => {
+                    // Ошибка
+                    console.log(error);
+                  });
+              }}
+            >
+              Поделиться!
+            </Button>
           </center>
-		  
         </Div>
       </Group>
     </Panel>
