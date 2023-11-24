@@ -1,5 +1,5 @@
 {
-    "name": "mini-app",
+    "name": "cat-clicker",
     "version": "0.0.1",
     "scripts": {
         "start": "cross-env PORT=10888 HTTPS=true react-scripts start",

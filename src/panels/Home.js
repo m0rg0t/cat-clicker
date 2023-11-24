@@ -17,7 +17,7 @@ const Home = ({ id, fetchedUser, openAction }) => (
     {fetchedUser && (
       <Group
         header={
-          <Header mode="secondary">User Data Fetched with VK Bridge</Header>
+          <Header mode="secondary">Кто нажмет на котика?</Header>
         }
       >
         <Cell
