@@ -1,4 +1,4 @@
-import bridge, { BannerAdLocation } from "@vkontakte/vk-bridge";
+import bridge from "@vkontakte/vk-bridge";
 import { useEffect } from "react";
 
 const useBannerAds = (vkBridgeStatus) => {
@@ -7,7 +7,7 @@ const useBannerAds = (vkBridgeStatus) => {
       bridge.send("VKWebAppInit").then(() => {
         bridge
           .send("VKWebAppShowBannerAd", {
-            banner_location: BannerAdLocation.BOTTOM,
+            banner_location: 'bottom',
           })
           .then((data) => {
             if (data.result) {

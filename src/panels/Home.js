@@ -11,6 +11,7 @@ import {
   Panel,
   PanelHeader,
   Paragraph,
+  Counter,
   Title,
 } from "@vkontakte/vkui";
 import getRandomGoodText from "../helpers/getRandomGoodText";
@@ -38,6 +39,7 @@ const Home = ({
                 <Avatar src={fetchedUser.photo_200} />
               ) : null
             }
+			after={<Counter>{clickCounter}</Counter>}
             subtitle={
               fetchedUser.city && fetchedUser.city.title
                 ? fetchedUser.city.title
