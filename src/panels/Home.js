@@ -11,7 +11,7 @@ import {
   PanelHeader,
 } from "@vkontakte/vkui";
 
-const Home = ({ id, fetchedUser }) => (
+const Home = ({ id, fetchedUser, openAction }) => (
   <Panel id={id}>
     <PanelHeader>Котокликер</PanelHeader>
     {fetchedUser && (
@@ -38,7 +38,22 @@ const Home = ({ id, fetchedUser }) => (
     )}
 
     <Group header={<Header mode="secondary">Нажми на котика</Header>}>
-      <Div></Div>
+      <Div>
+        <center>
+          <img
+            style={{
+              maxWidth: "100%",
+              maxHeight: "100%",
+            }}
+            src="/576.png"
+            alt="Котик"
+            onClick={() => {
+              console.log("on click on cat");
+              openAction();
+            }}
+          />
+        </center>
+      </Div>
     </Group>
 
     {/*<Group header={<Header mode="secondary">Navigation Example</Header>}>
@@ -53,7 +68,7 @@ const Home = ({ id, fetchedUser }) => (
 
 Home.propTypes = {
   id: PropTypes.string.isRequired,
-  go: PropTypes.func.isRequired,
+  openAction: PropTypes.func,
   fetchedUser: PropTypes.shape({
     photo_200: PropTypes.string,
     first_name: PropTypes.string,
