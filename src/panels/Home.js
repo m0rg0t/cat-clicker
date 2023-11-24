@@ -88,7 +88,7 @@ const Home = ({
 
 				${getRandomGoodText()}
 				
-				№котокликер`;
+				#котокликер`;
 
                 bridge
                   .send("VKWebAppShowWallPostBox", {
