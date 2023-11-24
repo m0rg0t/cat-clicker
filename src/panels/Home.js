@@ -39,7 +39,7 @@ const Home = ({
                 <Avatar src={fetchedUser.photo_200} />
               ) : null
             }
-			after={<Counter>{clickCounter}</Counter>}
+            after={<Counter mode="primary">{clickCounter}</Counter>}
             subtitle={
               fetchedUser.city && fetchedUser.city.title
                 ? fetchedUser.city.title
@@ -51,8 +51,11 @@ const Home = ({
         </Group>
       )}
 
-      <Group header={<Header mode="secondary">Нажми на котика</Header>}>
+      <Group>
         <Div>
+          <Title level="1" weight="bold" style={{ textAlign: "center" }}>
+            {getRandomGoodText()}
+          </Title>
           <Paragraph>
             С каждым нажатием на котика твой счет увеличивается на 1. Но каждое
             нажатие требует просмотра рекламы. Но даже если ты не нажмешь на
@@ -77,9 +80,7 @@ const Home = ({
               }}
             />
           </center>
-          <Title level="1" weight="bold" style={{ textAlign: "center" }}>
-            {getRandomGoodText()}
-          </Title>
+		  
         </Div>
       </Group>
     </Panel>
