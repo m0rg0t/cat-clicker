@@ -1,15 +1,16 @@
 import bridge from "@vkontakte/vk-bridge";
 import {
-	AdaptivityProvider,
-	Alert,
-	AppRoot,
-	ConfigProvider,
-	SplitCol,
-	SplitLayout,
-	View
+  AdaptivityProvider,
+  Alert,
+  AppRoot,
+  ConfigProvider,
+  SplitCol,
+  SplitLayout,
+  View,
 } from "@vkontakte/vkui";
 import "@vkontakte/vkui/dist/vkui.css";
 import React, { useEffect, useState } from "react";
+import useBannerAds from "./hooks/useBannerAds";
 
 import Home from "./panels/Home";
 
@@ -17,6 +18,46 @@ const App = () => {
   const [activePanel, setActivePanel] = useState("home");
   const [fetchedUser, setUser] = useState(null);
   const [popout, setPopout] = useState(null); //useState(<ScreenSpinner size='large' />);
+
+  const [isNativeAds, setIsNativeAds] = useState(false);
+
+  useEffect(() => {
+    isNativeAdsAvailableCheck();
+  }, []);
+
+  const isNativeAdsAvailableCheck = async () => {
+    try {
+      const data = await bridge.send("VKWebAppCheckNativeAds", {
+        ad_format: "reward",
+      });
+      if (data.result) {
+        setIsNativeAds(true);
+        return true;
+      } else {
+        setIsNativeAds(false);
+        return false;
+      }
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  };
+
+  const showAd = async () => {
+    try {
+      const data = await bridge.send("VKWebAppShowNativeAds", {
+        ad_format: "reward",
+      });
+
+      if (data.result)
+        // Успех
+        console.log("Реклама показана");
+      // Ошибка
+      else console.log("Ошибка при показе");
+    } catch (error) {
+      console.log(error); /* Ошибка */
+    }
+  };
 
   const openAction = () => {
     setPopout(
@@ -42,6 +83,7 @@ const App = () => {
       />
     );
   };
+
   useEffect(() => {
     async function fetchData() {
       const user = await bridge.send("VKWebAppGetUserInfo");
@@ -51,6 +93,8 @@ const App = () => {
     fetchData();
   }, []);
 
+  useBannerAds("INITIALIZED");
+
   return (
     <ConfigProvider>
       <AdaptivityProvider>
@@ -59,6 +103,9 @@ const App = () => {
             <SplitCol>
               <View activePanel={activePanel}>
                 <Home
+                  isNativeAds={isNativeAds}
+                  isNativeAdsAvailableCheck={isNativeAdsAvailableCheck}
+                  showAd={showAd}
                   id="home"
                   fetchedUser={fetchedUser}
                   openAction={openAction}
