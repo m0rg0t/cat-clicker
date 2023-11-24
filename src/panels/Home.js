@@ -13,6 +13,7 @@ import {
   Paragraph,
   Title,
 } from "@vkontakte/vkui";
+import getRandomGoodText from "../helpers/getRandomGoodText";
 
 const Home = ({
   id,
@@ -23,7 +24,7 @@ const Home = ({
   isNativeAdsAvailableCheck,
 }) => {
   const randomCat = useRef(getRandomCatImage());
-  console.log("randomCat", randomCat.current)
+  console.log("randomCat", randomCat.current);
 
   return (
     <Panel id={id}>
@@ -72,6 +73,9 @@ const Home = ({
               }}
             />
           </center>
+          <Title level="1" weight="bold" style={{ textAlign: "center" }}>
+            {getRandomGoodText()}
+          </Title>
         </Div>
       </Group>
     </Panel>
