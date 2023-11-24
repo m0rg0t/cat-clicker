@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import getRandomCatImage from "../helpers/getRandomCatImage";
 
 import {
@@ -23,6 +23,7 @@ const Home = ({
   isNativeAds,
   isNativeAdsAvailableCheck,
 }) => {
+  const [clickCounter, setClickCounter] = useState(0);
   const randomCat = useRef(getRandomCatImage());
   console.log("randomCat", randomCat.current);
 
@@ -64,7 +65,8 @@ const Home = ({
               src={randomCat.current}
               alt="Котик"
               onClick={() => {
-                console.log("click on cat");
+                console.log("click on cat", clickCounter);
+                setClickCounter((prev) => prev + 1);
                 if (isNativeAds) {
                   showAd();
                   isNativeAdsAvailableCheck();
