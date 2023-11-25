@@ -14,9 +14,11 @@ import {
   Paragraph,
   Counter,
   Title,
-  Button
+  Button,
+  Input,
 } from "@vkontakte/vkui";
 import getRandomGoodText from "../helpers/getRandomGoodText";
+import "./Home.css";
 
 const Home = ({
   id,
@@ -33,58 +35,67 @@ const Home = ({
   return (
     <Panel id={id}>
       <PanelHeader>Котокликер</PanelHeader>
-      {fetchedUser && (
+      {
         <Group header={<Header mode="secondary">Кто нажмет на котика?</Header>}>
           <Cell
             before={
-              fetchedUser.photo_200 ? (
+              fetchedUser?.photo_200 ? (
                 <Avatar src={fetchedUser.photo_200} />
               ) : null
             }
             after={<Counter mode="primary">{clickCounter}</Counter>}
             subtitle={
-              fetchedUser.city && fetchedUser.city.title
+              fetchedUser?.city && fetchedUser.city?.title
                 ? fetchedUser.city.title
                 : ""
             }
           >
-            {`${fetchedUser.first_name} ${fetchedUser.last_name}`}
+            {`${fetchedUser?.first_name || "Хороший"} ${
+              fetchedUser?.last_name || "человек"
+            }`}
           </Cell>
         </Group>
-      )}
+      }
 
       <Group>
         <Div>
-          <Title level="1" weight="bold" style={{ textAlign: "center" }}>
-            {getRandomGoodText()}
-          </Title>
-          <Paragraph>
-            С каждым нажатием на котика твой счет увеличивается на 1. Но нажатие
-            иногда вызывает рекламу.
-            <br /> Но даже если ты не нажмешь на котика, ты все равно большой
-            молодец, и у тебя все получится.
-          </Paragraph>
+          <div id="mainCatBlock">
+            <div id="mainCatBlock_texts">
+              <Title level="1" weight="bold" style={{ textAlign: "center" }}>
+                {getRandomGoodText()}
+              </Title>
+              <Paragraph>
+                С каждым нажатием на котика твой счет увеличивается на 1. Но
+                нажатие иногда вызывает рекламу. Но даже если ты не нажмешь на котика, ты все равно 
+                <strong> большой молодец, и у тебя все получится.</strong>
+              </Paragraph>
+            </div>
+            <div id="mainCatBlock_cats">
+              <img id='mainCatImg'
+                src={randomCat.current}
+                alt="Котик"
+                onClick={() => {
+                  console.log("click on cat", clickCounter);
+                  setClickCounter((prev) => prev + 1);
+                  if (isNativeAds && (clickCounter + 1) % 3 === 0) {
+                    showAd();
+                    isNativeAdsAvailableCheck();
+                  }
+                  //openAction();
+                }}
+              />
+            </div>
+          </div>
           <center>
-            <img
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-              }}
-              src={randomCat.current}
-              alt="Котик"
-              onClick={() => {
-                console.log("click on cat", clickCounter);
-                setClickCounter((prev) => prev + 1);
-                if (isNativeAds && (clickCounter + 1) % 3 === 0) {
-                  showAd();
-                  isNativeAdsAvailableCheck();
-                }
-                //openAction();
-              }}
-            />
+            <div id='sharing'>
+              <Paragraph>
+                И если хочешь, введи столько кликов по котику, сколько ты хочешь</Paragraph>
+                <Input type='number' onChange={(e) => {
+                  setClickCounter(e.target.value)
+                } } value={clickCounter} />
             <Button
               onClick={() => {
-				const text = `Я нажал на котика вот столько раз: ${clickCounter}
+                const text = `Я нажал на котика вот столько раз: ${clickCounter}
 
 				${getRandomGoodText()}
 				
@@ -108,6 +119,7 @@ const Home = ({
             >
               Поделиться!
             </Button>
+            </div>
           </center>
         </Div>
       </Group>
