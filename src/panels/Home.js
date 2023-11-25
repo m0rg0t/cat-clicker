@@ -91,7 +91,11 @@ const Home = ({
               <Paragraph>
                 И если хочешь, введи столько кликов по котику, сколько ты хочешь</Paragraph>
                 <Input type='number' onChange={(e) => {
-                  setClickCounter(e.target.value)
+                  if (Number(e.target.value) < 0) {
+                    setClickCounter(0);
+                    return;
+                  }
+                  setClickCounter(Number(e.target.value));
                 } } value={clickCounter} />
             <Button
               onClick={() => {
